@@ -1,0 +1,23 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "A player's profile and current game stats. Used for leaderboard.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "displayName": { "type": "string" },
+        "totalLoc": { "type": "number", "minimum": 0 },
+        "locPerSec": { "type": "number", "minimum": 0 },
+        "updatedAt": { "type": "string", "format": "timestamp" }
+      },
+      "required": ["userId", "displayName", "totalLoc", "locPerSec", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": { "$ref": "User" },
+      "description": "Stores player profiles and leaderboard stats."
+    }
+  }
+}
