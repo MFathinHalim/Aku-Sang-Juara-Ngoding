@@ -264,7 +264,7 @@ export default function LandingPage({ onStart }: LandingPageProps) {
           >
             <h3 className="text-2xl font-medium tracking-tight md:w-1/2 px-2 transition-colors group-hover:text-[#4285F4]">High-Frequency <br className="hidden md:block" />Input</h3>
             <div className="bg-[#e8eaed] text-right rounded-2xl p-6 md:w-1/2 text-sm leading-relaxed text-[#3c4043] shadow-inner font-medium transition-colors group-hover:bg-[#dadce0]/50">
-              Low-latency keystroke processing untuk konversi koin instan.
+              Low-latency keystroke processing for instant coin conversion.
             </div>
           </motion.div>
 
@@ -278,7 +278,7 @@ export default function LandingPage({ onStart }: LandingPageProps) {
           >
             <h3 className="text-2xl font-medium tracking-tight md:w-1/2 px-2 text-left md:text-right transition-colors group-hover:text-[#4285F4]">Scalable <br className="hidden md:block"/>Infrastructure</h3>
             <div className="bg-[#e8eaed] text-left rounded-2xl p-6 md:w-1/2 text-sm leading-relaxed text-[#3c4043] shadow-inner font-medium transition-colors group-hover:bg-[#dadce0]/50">
-              Arsitektur upgrade modular dari Legacy Systems ke Quantum Tools.
+              Modular upgrade architecture from Legacy Systems to Quantum Tools.
             </div>
           </motion.div>
 
@@ -292,7 +292,7 @@ export default function LandingPage({ onStart }: LandingPageProps) {
           >
             <h3 className="text-2xl font-medium tracking-tight md:w-1/2 px-2 transition-colors group-hover:text-[#4285F4]">Global Sync</h3>
             <div className="bg-[#e8eaed] text-right rounded-2xl p-6 md:w-1/2 text-sm leading-relaxed text-[#3c4043] shadow-inner font-medium transition-colors group-hover:bg-[#dadce0]/50">
-              Sinkronisasi leaderboard real-time untuk validasi dominasi Anda.
+              Real-time leaderboard synchronization to validate your dominance.
             </div>
           </motion.div>
         </div>
@@ -335,7 +335,7 @@ export default function LandingPage({ onStart }: LandingPageProps) {
             M. Fathin Halim is an indie solo developer with five years of experience who thrives on creative storytelling and participating in the <span className="font-bold text-[#202124]">#JuaraVibeCoding</span> challenge by engineering DevTycoon.
           </p>
           <p className="text-[#3c4043] leading-relaxed font-medium text-[15px]">
-            Also he is <a href="https://mahiru-shiina.vercel.app" target="_blank" rel="noopener noreferrer" className="text-[#4285F4] font-semibold hover:underline cursor-pointer">Mahiru Shiina's Husband</a>
+            Also he is <a href="https://mahiru-shiina.vercel.app" target="_blank" rel="noopener noreferrer" className="text-[#4285F4] font-semibold hover:underline cursor-pointer">Mahiru Shiina's Husband</a> and <a href="https://ishimi-yokoyama.vercel.app" target="_blank" rel="noopener noreferrer" className="text-[#4285F4] font-semibold hover:underline cursor-pointer">Ishimi Yokoyama's Husband</a>
           </p>
         </motion.div>
 

@@ -13,13 +13,20 @@ service cloud.firestore {
     function isSignedIn() { return request.auth != null; }
 
     function isValidUser(data) {
-      return data.keys().hasAll(['userId', 'displayName', 'totalLoc', 'locPerSec', 'updatedAt'])
-        && data.keys().size() == 5
+      let reqKeys = data.keys().hasAll(['userId', 'displayName', 'totalLoc', 'locPerSec', 'updatedAt']);
+      let validTheme = !('theme' in data) || (data.theme is string && data.theme.size() <= 32);
+      let validAchievements = !('achievements' in data) || (data.achievements is list && data.achievements.size() <= 100);
+      let validPhoto = !('photoURL' in data) || (data.photoURL is string && data.photoURL.size() <= 1024);
+      
+      return reqKeys
         && data.userId == request.auth.uid
         && data.displayName is string && data.displayName.size() > 0 && data.displayName.size() <= 64
         && data.totalLoc is number && data.totalLoc >= 0
         && data.locPerSec is number && data.locPerSec >= 0
-        && data.updatedAt == request.time;
+        && data.updatedAt == request.time
+        && validTheme
+        && validAchievements
+        && validPhoto;
     }
 
     match /users/{userId} {
@@ -30,11 +37,17 @@ service cloud.firestore {
         && isValidUser(incoming());
         
       allow update: if isSignedIn()
+        && isValidId(userId)
         && userId == request.auth.uid
-        && incoming().diff(existing()).affectedKeys().hasOnly(['displayName', 'totalLoc', 'locPerSec', 'updatedAt'])
+        && incoming().diff(existing()).affectedKeys().hasOnly(['userId', 'displayName', 'photoURL', 'totalLoc', 'locPerSec', 'updatedAt', 'theme', 'achievements', 'bugsSquashed'])
+        && (incoming().userId == existing().userId)
         && (incoming().displayName == existing().displayName || (incoming().displayName is string && incoming().displayName.size() > 0 && incoming().displayName.size() <= 64))
+        && (!('photoURL' in incoming()) || (incoming().photoURL is string && incoming().photoURL.size() <= 1024))
         && (incoming().totalLoc == existing().totalLoc || (incoming().totalLoc is number && incoming().totalLoc >= 0))
         && (incoming().locPerSec == existing().locPerSec || (incoming().locPerSec is number && incoming().locPerSec >= 0))
+        && (!('bugsSquashed' in incoming()) || (incoming().bugsSquashed is number && incoming().bugsSquashed >= 0))
+        && (!('theme' in incoming()) || (incoming().theme is string && incoming().theme.size() <= 32))
+        && (!('achievements' in incoming()) || (incoming().achievements is list && incoming().achievements.size() <= 100))
         && incoming().updatedAt == request.time;
     }
   }

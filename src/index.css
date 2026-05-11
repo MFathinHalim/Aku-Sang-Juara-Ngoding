@@ -5,9 +5,95 @@
   --font-sans: "Google Sans", "Product Sans", "Plus Jakarta Sans", ui-sans-serif, system-ui, sans-serif;
 }
 
+:root {
+  /* One Dark Pro (Default) */
+  --bg-main: #282c34;
+  --bg-sidebar: #21252b;
+  --bg-hover: #2c313a;
+  --border: #181a1f;
+  --border-light: #3e4451;
+  --text-main: #abb2bf;
+  --text-muted: #5c6370;
+
+  --color-primary: #61afef;
+  --color-primary-dark: #528bff;
+  --color-error: #e06c75;
+  --color-error-dark: #c85a62;
+  --color-warning: #e5c07b;
+  --color-success: #98c379;
+  --color-info: #d19a66;
+  --color-keyword: #c678dd;
+
+  --bg-terminal: #1e1e1e;
+  --border-terminal: #333333;
+  --text-terminal-muted: #a0a0a0;
+  --text-terminal: #d4d4d4;
+  --color-terminal-ok: #89d185;
+  --color-terminal-error: #f48771;
+  --bg-terminal-button: #444444;
+}
+
+body[data-theme='dracula'] {
+  --bg-main: #282a36;
+  --bg-sidebar: #21222c;
+  --bg-hover: #44475a;
+  --border: #191a21;
+  --border-light: #6272a4;
+  --text-main: #f8f8f2;
+  --text-muted: #6272a4;
+
+  --color-primary: #8be9fd;
+  --color-primary-dark: #62d6e8;
+  --color-error: #ff5555;
+  --color-error-dark: #ff3333;
+  --color-warning: #f1fa8c;
+  --color-success: #50fa7b;
+  --color-info: #ffb86c;
+  --color-keyword: #ff79c6;
+}
+
+body[data-theme='monokai'] {
+  --bg-main: #272822;
+  --bg-sidebar: #1e1f1c;
+  --bg-hover: #3e3d32;
+  --border: #171814;
+  --border-light: #49483e;
+  --text-main: #f8f8f2;
+  --text-muted: #75715e;
+
+  --color-primary: #66d9ef;
+  --color-primary-dark: #45b6cc;
+  --color-error: #f92672;
+  --color-error-dark: #d81461;
+  --color-warning: #e6db74;
+  --color-success: #a6e22e;
+  --color-info: #fd971f;
+  --color-keyword: #f92672; /* keywords in monokai are pinkish red */
+}
+
+body[data-theme='github-light'] {
+  --bg-main: #ffffff;
+  --bg-sidebar: #f6f8fa;
+  --bg-hover: #eaeef2;
+  --border: #d0d7de;
+  --border-light: #afb8c1;
+  --text-main: #24292f;
+  --text-muted: #57606a;
+
+  --color-primary: #0969da;
+  --color-primary-dark: #0550ae;
+  --color-error: #cf222e;
+  --color-error-dark: #a40e26;
+  --color-warning: #b08800;
+  --color-success: #1a7f37;
+  --color-info: #bc4c00;
+  --color-keyword: #cf222e; /* keywords red */
+}
+
 body {
   margin: 0;
   font-family: var(--font-sans);
+  color: var(--text-main) !important;
 }
 
 /* Custom scrollbar for modern feel */

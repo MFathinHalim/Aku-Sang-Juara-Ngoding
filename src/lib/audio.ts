@@ -30,13 +30,32 @@ class AudioGen {
     setTimeout(() => this.playTone(100, 'sawtooth', 0.2, 0.2), 50);
   }
 
+  playGoldenIdeaSpawn() {
+    this.playTone(880, 'sine', 0.1, 0.05);
+    setTimeout(() => this.playTone(1760, 'sine', 0.3, 0.1), 100);
+  }
+
   playError() {
     this.playTone(200, 'sawtooth', 0.3, 0.2);
   }
 
-  playGoldenIdeaSpawn() {
-    this.playTone(880, 'sine', 0.1, 0.05);
-    setTimeout(() => this.playTone(1760, 'sine', 0.3, 0.1), 100);
+  playSlowMo() {
+    if (!this.ctx || !this.isEnabled) return;
+    const osc = this.ctx.createOscillator();
+    const gainNode = this.ctx.createGain();
+    
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(300, this.ctx.currentTime);
+    osc.frequency.exponentialRampToValueAtTime(30, this.ctx.currentTime + 1.5);
+    
+    gainNode.gain.setValueAtTime(0, this.ctx.currentTime);
+    gainNode.gain.linearRampToValueAtTime(0.3, this.ctx.currentTime + 0.1);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, this.ctx.currentTime + 2);
+
+    osc.connect(gainNode);
+    gainNode.connect(this.ctx.destination);
+    osc.start();
+    osc.stop(this.ctx.currentTime + 2);
   }
 
   playGoldenIdeaClick() {

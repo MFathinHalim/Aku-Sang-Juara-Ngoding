@@ -9,6 +9,12 @@
         "displayName": { "type": "string" },
         "totalLoc": { "type": "number", "minimum": 0 },
         "locPerSec": { "type": "number", "minimum": 0 },
+        "theme": { "type": "string", "description": "Selected UI theme" },
+        "achievements": {
+           "type": "array",
+           "items": { "type": "string" },
+           "description": "List of unlocked achievement IDs"
+        },
         "updatedAt": { "type": "string", "format": "timestamp" }
       },
       "required": ["userId", "displayName", "totalLoc", "locPerSec", "updatedAt"]
