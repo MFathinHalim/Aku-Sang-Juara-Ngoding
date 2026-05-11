@@ -8,7 +8,7 @@ export default function App() {
   return (
     <>
       {isPlaying ? (
-        <Game />
+        <Game onBack={() => setIsPlaying(false)} />
       ) : (
         <LandingPage onStart={() => setIsPlaying(true)} />
       )}
