@@ -1,6 +1,6 @@
-import { motion, useMotionValue, useSpring } from 'motion/react';
+import { motion, useMotionValue, useSpring, useScroll, useTransform } from 'motion/react';
 import { Play } from 'lucide-react';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { sfx } from './lib/audio';
 
 interface LandingPageProps {
@@ -42,29 +42,29 @@ export default function LandingPage({ onStart }: LandingPageProps) {
     return () => window.removeEventListener('mousemove', moveCursor);
   }, [cursorX, cursorY]);
 
+  const introRef = useRef<HTMLHeadingElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: introRef,
+    offset: ["start 85%", "end 50%"]
+  });
+
+  const textLengthValue = useTransform(scrollYProgress, [0, 1], [0, fullPlatformText.length]);
+
+  const photoRef = useRef<HTMLAnchorElement>(null);
+  const { scrollYProgress: photoScrollYProgress } = useScroll({
+    target: photoRef,
+    offset: ["start 90%", "center center"]
+  });
+  const photoScale = useTransform(photoScrollYProgress, [0, 1], [0.6, 1]);
+  const photoOpacity = useTransform(photoScrollYProgress, [0, 1], [0.3, 1]);
+
   useEffect(() => {
-    let currentString = "";
-    let currentIndex = 0;
-    let intervalId: ReturnType<typeof setInterval>;
-    
-    const timeoutId = setTimeout(() => {
-      intervalId = setInterval(() => {
-        if (currentIndex < fullPlatformText.length) {
-          currentString += fullPlatformText[currentIndex];
-          setDisplayedText(currentString);
-          currentIndex++;
-        } else {
-          clearInterval(intervalId);
-          setTypingComplete(true);
-        }
-      }, 35);
-    }, 1200); 
-    
-    return () => {
-      clearTimeout(timeoutId);
-      if (intervalId) clearInterval(intervalId);
-    };
-  }, []);
+    return textLengthValue.on("change", (latest) => {
+      const charCount = Math.round(latest);
+      setDisplayedText(fullPlatformText.substring(0, charCount));
+      setTypingComplete(charCount === fullPlatformText.length);
+    });
+  }, [textLengthValue, fullPlatformText]);
 
   useEffect(() => {
     const handleKeyDown = () => {
@@ -215,7 +215,12 @@ export default function LandingPage({ onStart }: LandingPageProps) {
         </div>
 
         {/* Just Smash It Banner */}
-        <motion.div variants={itemVariants}>
+        <motion.div 
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={itemVariants}
+        >
           <motion.div 
             key={smashText}
             initial={{ scale: 0.95, opacity: 0.5, rotate: -2 }}
@@ -229,7 +234,14 @@ export default function LandingPage({ onStart }: LandingPageProps) {
         </motion.div>
 
         {/* Intro */}
-        <motion.h2 variants={itemVariants} className="text-2xl md:text-3xl font-medium tracking-tight leading-snug mb-20 max-w-2xl px-2 min-h-[6rem] md:min-h-[4.5rem]">
+        <motion.h2 
+          ref={introRef}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={itemVariants} 
+          className="text-2xl md:text-3xl font-medium tracking-tight leading-snug mb-20 max-w-2xl px-2 min-h-[6rem] md:min-h-[4.5rem]"
+        >
           {displayedText}
           {!typingComplete && (
             <motion.span 
@@ -243,7 +255,13 @@ export default function LandingPage({ onStart }: LandingPageProps) {
         {/* Features List */}
         <div className="space-y-6 mb-20">
           {/* Feature 1 */}
-          <motion.div variants={itemVariants} className="flex flex-col md:flex-row items-center gap-6 justify-between group">
+          <motion.div 
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-50px" }}
+            variants={itemVariants} 
+            className="flex flex-col md:flex-row items-center gap-6 justify-between group"
+          >
             <h3 className="text-2xl font-medium tracking-tight md:w-1/2 px-2 transition-colors group-hover:text-[#4285F4]">High-Frequency <br className="hidden md:block" />Input</h3>
             <div className="bg-[#e8eaed] text-right rounded-2xl p-6 md:w-1/2 text-sm leading-relaxed text-[#3c4043] shadow-inner font-medium transition-colors group-hover:bg-[#dadce0]/50">
               Low-latency keystroke processing untuk konversi koin instan.
@@ -251,7 +269,13 @@ export default function LandingPage({ onStart }: LandingPageProps) {
           </motion.div>
 
           {/* Feature 2 */}
-          <motion.div variants={itemVariants} className="flex flex-col md:flex-row-reverse items-center gap-6 justify-between group">
+          <motion.div 
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-50px" }}
+            variants={itemVariants} 
+            className="flex flex-col md:flex-row-reverse items-center gap-6 justify-between group"
+          >
             <h3 className="text-2xl font-medium tracking-tight md:w-1/2 px-2 text-left md:text-right transition-colors group-hover:text-[#4285F4]">Scalable <br className="hidden md:block"/>Infrastructure</h3>
             <div className="bg-[#e8eaed] text-left rounded-2xl p-6 md:w-1/2 text-sm leading-relaxed text-[#3c4043] shadow-inner font-medium transition-colors group-hover:bg-[#dadce0]/50">
               Arsitektur upgrade modular dari Legacy Systems ke Quantum Tools.
@@ -259,7 +283,13 @@ export default function LandingPage({ onStart }: LandingPageProps) {
           </motion.div>
 
           {/* Feature 3 */}
-          <motion.div variants={itemVariants} className="flex flex-col md:flex-row items-center gap-6 justify-between group">
+          <motion.div 
+            initial="hidden"
+            whileInView="show"
+            viewport={{ once: true, margin: "-50px" }}
+            variants={itemVariants} 
+            className="flex flex-col md:flex-row items-center gap-6 justify-between group"
+          >
             <h3 className="text-2xl font-medium tracking-tight md:w-1/2 px-2 transition-colors group-hover:text-[#4285F4]">Global Sync</h3>
             <div className="bg-[#e8eaed] text-right rounded-2xl p-6 md:w-1/2 text-sm leading-relaxed text-[#3c4043] shadow-inner font-medium transition-colors group-hover:bg-[#dadce0]/50">
               Sinkronisasi leaderboard real-time untuk validasi dominasi Anda.
@@ -268,15 +298,34 @@ export default function LandingPage({ onStart }: LandingPageProps) {
         </div>
 
         {/* Photo Box Placeholder */}
-        <motion.div variants={itemVariants}>
-          <a id="creator" href="https://mfathinhalim.github.io" target="_blank" rel="noopener noreferrer" className="block w-full aspect-[3/2] bg-[#e8eaed] rounded-[2rem] mb-8 overflow-hidden shadow-inner relative group cursor-pointer scroll-mt-24">
+        <motion.div 
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={itemVariants}
+        >
+          <motion.a 
+             ref={photoRef}
+             style={{ scale: photoScale, opacity: photoOpacity }}
+             id="creator" 
+             href="https://mfathinhalim.github.io" 
+             target="_blank" 
+             rel="noopener noreferrer" 
+             className="block w-full aspect-[3/2] bg-[#e8eaed] rounded-[2rem] mb-8 overflow-hidden shadow-inner relative group cursor-pointer scroll-mt-24"
+          >
              <img src="https://mfathinhalim.github.io/Fathins/Fathin%20(1).png" alt="M.Fathin Halim" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" referrerPolicy="no-referrer" />
              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/5 transition-colors duration-500"></div>
-          </a>
+          </motion.a>
         </motion.div>
 
         {/* Bio Section */}
-        <motion.div variants={itemVariants} className="mb-20 px-2">
+        <motion.div 
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={itemVariants} 
+          className="mb-20 px-2"
+        >
           <h3 className="text-2xl font-semibold tracking-tight mb-4 text-[#202124]">
             <a href="https://mfathinhalim.github.io" target="_blank" rel="noopener noreferrer" className="hover:text-[#4285F4] transition-colors cursor-pointer inline-flex items-center gap-2">
               M.Fathin Halim
@@ -291,7 +340,13 @@ export default function LandingPage({ onStart }: LandingPageProps) {
         </motion.div>
 
         {/* Bottom CTA */}
-        <motion.div variants={itemVariants} className="flex flex-col items-center justify-center mb-16">
+        <motion.div 
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={itemVariants} 
+          className="flex flex-col items-center justify-center mb-16"
+        >
           {/* Small illustration placeholder */}
           <motion.div 
             initial={{ y: 0 }}
@@ -334,7 +389,13 @@ export default function LandingPage({ onStart }: LandingPageProps) {
         </motion.div>
 
         {/* Footer */}
-        <motion.footer variants={itemVariants} className="border-t border-[#dadce0] pt-8 pb-4 px-2">
+        <motion.footer 
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={itemVariants} 
+          className="border-t border-[#dadce0] pt-8 pb-4 px-2"
+        >
           <h4 className="font-semibold text-lg mb-2 text-[#202124]">DevTycoon</h4>
           <p className="text-[#5f6368] text-sm leading-relaxed max-w-sm">
             DevTycoon is a (fun) scalability platform that allows you to optimize the infrastructure of a global (in this web) ecosystem.
