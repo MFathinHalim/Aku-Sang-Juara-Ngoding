@@ -68,7 +68,8 @@ body[data-theme='monokai'] {
   --color-warning: #e6db74;
   --color-success: #a6e22e;
   --color-info: #fd971f;
-  --color-keyword: #f92672; /* keywords in monokai are pinkish red */
+  --color-keyword: #f92672;
+  /* keywords in monokai are pinkish red */
 }
 
 body[data-theme='github-light'] {
@@ -87,13 +88,13 @@ body[data-theme='github-light'] {
   --color-warning: #b08800;
   --color-success: #1a7f37;
   --color-info: #bc4c00;
-  --color-keyword: #cf222e; /* keywords red */
+  --color-keyword: #cf222e;
+  /* keywords red */
 }
 
 body {
   margin: 0;
   font-family: var(--font-sans);
-  color: var(--text-main) !important;
 }
 
 /* Custom scrollbar for modern feel */
