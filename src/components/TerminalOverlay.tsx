@@ -12,13 +12,35 @@ type BugType = {
 };
 
 const BUGS: BugType[] = [
+  // --- Runtime & Memory Issues ---
   { message: "FATAL ERROR: Ineffective mark-compacts near heap limit Allocation failed - JavaScript heap out of memory", solution: "npm run clean" },
-  { message: "CONFLICT (content): Merge conflict in src/main.tsx\nAutomatic merge failed; fix conflicts and then commit the result.", solution: "git merge --abort" },
-  { message: "Error: Cannot find module 'react-is'\nRequire stack:\n- /app/node_modules/styled-components/dist/styled-components.cjs.js", solution: "npm install" },
   { message: "Error: listen EADDRINUSE: address already in use :::3000", solution: "killall node" },
   { message: "Uncaught TypeError: Cannot read properties of undefined (reading 'map')", solution: "git reset --hard" },
-];
 
+  // --- Dependency & Build Issues ---
+  { message: "Error: Cannot find module 'react-is'\nRequire stack: - /app/node_modules/styled-components/", solution: "npm install" },
+  { message: "sh: vite: command not found. Development server failed to start.", solution: "npm install" },
+  { message: "Module not found: Error: Can't resolve './components/Hero' in '/src/pages'", solution: "ls -R" },
+
+  // --- Git & Collaboration Issues ---
+  { message: "CONFLICT (content): Merge conflict in src/main.tsx\nAutomatic merge failed; fix conflicts.", solution: "git merge --abort" },
+  { message: "error: failed to push some refs to 'github.com:repo/devtycoon.git'\nhint: Updates were rejected because the remote contains work that you do not have locally.", solution: "git pull --rebase" },
+  { message: "error: Your local changes to the following files would be overwritten by merge:\n\tpackage-lock.json", solution: "git stash" },
+
+  // --- Infrastructure & Cloud Issues (New!) ---
+  { message: "Docker Error: No space left on device. Cannot create container.", solution: "docker system prune" },
+  { message: "AWS Error: Request has expired. Check your system clock and credentials.", solution: "aws configure" },
+  { message: "Kubernetes Error: ImagePullBackOff - Failed to pull image from registry.", solution: "kubectl rollout restart" },
+
+  // --- Database & Security Issues (New!) ---
+  { message: "PostgreSQL: FATAL: remaining connection slots are reserved for non-replication superuser connections", solution: "npx db-reset" },
+  { message: "Security Alert: Unauthorized access attempt detected in SSH logs from IP 192.168.1.105", solution: "sudo ufw enable" },
+  { message: "Redis Error: MISCONF Redis is configured to save RDB snapshots, but it is currently not able to persist on disk.", solution: "redis-cli flushall" },
+
+  // --- Fun/Legacy Issues ---
+  { message: "Critical: Production server is on fire. Literally.", solution: "sudo reboot" },
+  { message: "Vibe Check Failed: Your code is too messy for the #JuaraVibeCoding challenge.", solution: "npm run lint --fix" },
+];
 export function TerminalOverlay({ onFixBug }: TerminalOverlayProps) {
   const [bug, setBug] = useState<BugType | null>(null);
   const [input, setInput] = useState("");
@@ -53,40 +75,55 @@ export function TerminalOverlay({ onFixBug }: TerminalOverlayProps) {
     e.preventDefault();
     if (!input.trim() || !bug) return;
 
-    const cmd = input.trim();
+    const cmd = input.trim().toLowerCase(); // Normalize input
     const newHistory = [...history, `$ ${cmd}`];
-    
+
     setInput("");
     sfx.init();
     sfx.playType();
 
-    if (cmd === 'help') {
-       newHistory.push("AVAILABLE COMMANDS:");
-       BUGS.forEach(b => newHistory.push(`- ${b.solution}`));
-       setHistory(newHistory);
-       return;
+    // Utility Commands
+    if (cmd === 'clear') {
+      setHistory(["[SYSTEM] Terminal cleared.", "> Resolve the bug below:", bug.message]);
+      return;
     }
 
-    if (cmd === bug.solution) {
+    if (cmd === 'ls') {
+      newHistory.push("src/  node_modules/  package.json  public/  README.md  .env");
+      setHistory(newHistory);
+      return;
+    }
+
+    if (cmd === 'help') {
+      newHistory.push("SYSTEM UTILITIES: clear, ls, help, cheat-sheet");
+      newHistory.push("RECOVERY COMMANDS:");
+      // Menampilkan 5 command acak agar user tidak terlalu bingung
+      const tips = [...new Set(BUGS.map(b => b.solution))].sort(() => 0.5 - Math.random()).slice(0, 5);
+      tips.forEach(t => newHistory.push(`- ${t}`));
+      setHistory(newHistory);
+      return;
+    }
+
+    // Logic Resolving Bug
+    if (cmd === bug.solution.toLowerCase()) {
       newHistory.push("[OK] Command executed successfully. Bug resolved.");
       setHistory(newHistory);
       setTimeout(() => {
         onFixBug();
       }, 500);
     } else {
-      newHistory.push(`[ERROR] Command '${cmd}' failed or did not resolve the issue.`);
+      newHistory.push(`[ERROR] '${cmd}' is not the correct solution for this exception.`);
       setHistory(newHistory);
     }
   };
-
   return (
-    <motion.div 
+    <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
       className="absolute inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 sm:p-20"
     >
-      <motion.div 
+      <motion.div
         initial={{ y: 50, scale: 0.95 }}
         animate={{ y: 0, scale: 1 }}
         exit={{ y: 20, scale: 0.95 }}
@@ -99,7 +136,7 @@ export function TerminalOverlay({ onFixBug }: TerminalOverlayProps) {
             <div className="w-3 h-3 rounded-full bg-[#27c93f]" />
             <span className="text-[var(--text-terminal-muted)] ml-4 text-xs">root@devtycoon:~</span>
           </div>
-          <button 
+          <button
             onClick={() => {
               const newHistory = [...history, "> AVAILABLE COMMANDS:"];
               BUGS.forEach(b => newHistory.push(`- ${b.solution} : ${b.message.substring(0, 30)}...`));
