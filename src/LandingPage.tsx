@@ -330,7 +330,40 @@ export default function LandingPage({ onStart }: LandingPageProps) {
             </div>
           </motion.div>
         </div>
+        {/* Discord Community Section */}
+        <motion.div
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true, margin: "-50px" }}
+          variants={itemVariants}
+          className="mb-32 px-2"
+        >
+          <div className=" border border-[#5865F2]/20 rounded-[2rem] p-8 md:p-12 flex flex-col md:flex-row items-center justify-between gap-8 overflow-hidden relative group">
+            <div className="md:w-2/3 z-10">
+              <h2 className="text-3xl md:text-4xl mb-4">
+                Join our <span className="text-[#5865F2]">Discord's Server</span>
+              </h2>
+              <p className="leading-relaxed mb-0 max-w-lg">
+                Get the latest info on DevTycoon's admin events and connect with other indie developers.
+              </p>
+            </div>
 
+            <div className="md:w-1/3 flex justify-end z-10">
+              <a
+                href="https://discord.gg/your-link" // Ganti dengan link discordmu
+                target="_blank"
+                rel="noopener noreferrer"
+                onMouseEnter={() => {
+                  sfx.init();
+                  sfx.playHover();
+                }}
+                className="bg-[#5865F2] hover:bg-[#4752C4] text-white px-8 py-4 rounded-2xl font-bold text-lg transition-all hover:scale-105 active:scale-95 hover:translate-y-[2px] active:shadow-none active:translate-y-[8px] flex items-center gap-3 group"
+              >
+                Join
+              </a>
+            </div>
+          </div>
+        </motion.div>
         {/* Photo Box Placeholder */}
         <motion.div
           initial="hidden"
