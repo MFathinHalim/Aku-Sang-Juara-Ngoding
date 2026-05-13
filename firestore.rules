@@ -11,12 +11,22 @@ service cloud.firestore {
     function incoming() { return request.resource.data; }
     function existing() { return resource.data; }
     function isSignedIn() { return request.auth != null; }
+    function isAdmin() {
+      return isSignedIn() && (request.auth.token.email == 'halimfathin7@gmail.com' || request.auth.token.email == 'fathincoding@gmail.com');
+    }
 
     function isValidUser(data) {
       let reqKeys = data.keys().hasAll(['userId', 'displayName', 'totalLoc', 'locPerSec', 'updatedAt']);
       let validTheme = !('theme' in data) || (data.theme is string && data.theme.size() <= 32);
       let validAchievements = !('achievements' in data) || (data.achievements is list && data.achievements.size() <= 100);
       let validPhoto = !('photoURL' in data) || (data.photoURL is string && data.photoURL.size() <= 1024);
+      let validLoc = !('loc' in data) || (data.loc is number && data.loc >= 0);
+      let validBugs = !('bugsSquashed' in data) || (data.bugsSquashed is number && data.bugsSquashed >= 0);
+      let validFeatures = !('unlockedFeatures' in data) || (data.unlockedFeatures is list && data.unlockedFeatures.size() <= 50);
+      let validUpgrades = !('ownedUpgrades' in data) || (data.ownedUpgrades is list && data.ownedUpgrades.size() <= 20);
+      let validVersion = !('version' in data) || (data.version is string && data.version.size() <= 16);
+      let validProgress = !('projectProgress' in data) || (data.projectProgress is number && data.projectProgress >= 0);
+      let validIpo = !('ipoCount' in data) || (data.ipoCount is number && data.ipoCount >= 0);
       
       return reqKeys
         && data.userId == request.auth.uid
@@ -26,7 +36,14 @@ service cloud.firestore {
         && data.updatedAt == request.time
         && validTheme
         && validAchievements
-        && validPhoto;
+        && validPhoto
+        && validLoc
+        && validBugs
+        && validFeatures
+        && validUpgrades
+        && validVersion
+        && validProgress
+        && validIpo;
     }
 
     match /users/{userId} {
@@ -39,16 +56,21 @@ service cloud.firestore {
       allow update: if isSignedIn()
         && isValidId(userId)
         && userId == request.auth.uid
-        && incoming().diff(existing()).affectedKeys().hasOnly(['userId', 'displayName', 'photoURL', 'totalLoc', 'locPerSec', 'updatedAt', 'theme', 'achievements', 'bugsSquashed'])
+        && incoming().diff(existing()).affectedKeys().hasOnly(['userId', 'displayName', 'photoURL', 'loc', 'totalLoc', 'locPerSec', 'updatedAt', 'theme', 'achievements', 'bugsSquashed', 'unlockedFeatures', 'ownedUpgrades', 'version', 'projectProgress', 'ipoCount'])
         && (incoming().userId == existing().userId)
-        && (incoming().displayName == existing().displayName || (incoming().displayName is string && incoming().displayName.size() > 0 && incoming().displayName.size() <= 64))
-        && (!('photoURL' in incoming()) || (incoming().photoURL is string && incoming().photoURL.size() <= 1024))
-        && (incoming().totalLoc == existing().totalLoc || (incoming().totalLoc is number && incoming().totalLoc >= 0))
-        && (incoming().locPerSec == existing().locPerSec || (incoming().locPerSec is number && incoming().locPerSec >= 0))
-        && (!('bugsSquashed' in incoming()) || (incoming().bugsSquashed is number && incoming().bugsSquashed >= 0))
-        && (!('theme' in incoming()) || (incoming().theme is string && incoming().theme.size() <= 32))
-        && (!('achievements' in incoming()) || (incoming().achievements is list && incoming().achievements.size() <= 100))
-        && incoming().updatedAt == request.time;
+        && isValidUser(incoming());
+    }
+
+    match /globalActivity/{id} {
+      allow read: if true;
+      allow create: if isSignedIn() 
+        && incoming().userId == request.auth.uid
+        && incoming().createdAt == request.time;
+    }
+
+    match /globalEvents/{eventId} {
+      allow read: if true;
+      allow write: if isAdmin();
     }
   }
 }

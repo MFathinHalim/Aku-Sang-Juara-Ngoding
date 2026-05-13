@@ -5,25 +5,129 @@
       "description": "A player's profile and current game stats. Used for leaderboard.",
       "type": "object",
       "properties": {
-        "userId": { "type": "string" },
-        "displayName": { "type": "string" },
-        "totalLoc": { "type": "number", "minimum": 0 },
-        "locPerSec": { "type": "number", "minimum": 0 },
-        "theme": { "type": "string", "description": "Selected UI theme" },
-        "achievements": {
-           "type": "array",
-           "items": { "type": "string" },
-           "description": "List of unlocked achievement IDs"
+        "userId": {
+          "type": "string"
         },
-        "updatedAt": { "type": "string", "format": "timestamp" }
+        "displayName": {
+          "type": "string"
+        },
+        "totalLoc": {
+          "type": "number",
+          "minimum": 0
+        },
+        "loc": {
+          "type": "number",
+          "minimum": 0
+        },
+        "locPerSec": {
+          "type": "number",
+          "minimum": 0
+        },
+        "theme": {
+          "type": "string",
+          "description": "Selected UI theme"
+        },
+        "achievements": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of unlocked achievement IDs"
+        },
+        "ownedUpgrades": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "count": {
+                "type": "number"
+              }
+            }
+          }
+        },
+        "unlockedFeatures": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of discovered tech stack IDs"
+        },
+        "bugsSquashed": {
+          "type": "number",
+          "minimum": 0
+        },
+        "version": {
+          "type": "string",
+          "description": "Current product version"
+        },
+        "projectProgress": {
+          "type": "number",
+          "minimum": 0
+        },
+        "ipoCount": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Number of IPOs (Prestige)"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "timestamp"
+        }
       },
-      "required": ["userId", "displayName", "totalLoc", "locPerSec", "updatedAt"]
+      "required": [
+        "userId",
+        "displayName",
+        "totalLoc",
+        "locPerSec",
+        "updatedAt"
+      ]
+    },
+    "GlobalActivity": {
+      "title": "Global Activity",
+      "description": "Public log of player milestones",
+      "type": "object",
+      "properties": {
+        "type": {
+          "enum": [
+            "SHIP",
+            "IPO",
+            "JOIN"
+          ]
+        },
+        "userId": {
+          "type": "string"
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "message": {
+          "type": "string"
+        },
+        "detail": {
+          "type": "string"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "timestamp"
+        }
+      }
     }
   },
   "firestore": {
     "/users/{userId}": {
-      "schema": { "$ref": "User" },
+      "schema": {
+        "$ref": "User"
+      },
       "description": "Stores player profiles and leaderboard stats."
+    },
+    "/globalActivity/{id}": {
+      "schema": {
+        "$ref": "GlobalActivity"
+      },
+      "description": "Feed for player achievements"
     }
   }
 }
