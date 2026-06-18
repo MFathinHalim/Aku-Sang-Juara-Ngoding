@@ -1,6 +1,7 @@
-<img src="https://res.cloudinary.com/startup-grind/image/upload/dpr_2.0,fl_sanitize/v1/gcs/platform-data-goog/contentbuilder/GDG-Lockup-1Line-Black_vMWBFT9.svg" width='240'/>
+<img src="https://res.cloudinary.com/startup-grind/image/upload/dpr_2.0,fl_sanitize/v1/gcs/platform-data-goog/contentbuilder/GDG-Lockup-1Line-Black_vMWBFT9.svg" width='240'/> | Juara Vibe Coding
 
 # DevTycoon
+<img width="957" height="452" alt="image" src="https://github.com/user-attachments/assets/92886931-8198-4d12-8581-aad1a033ada0" />
 
 > A fun scalability game where you optimize the infrastructure of a global web ecosystem.
 
