@@ -1,20 +1,64 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+<img src="https://res.cloudinary.com/startup-grind/image/upload/dpr_2.0,fl_sanitize/v1/gcs/platform-data-goog/contentbuilder/GDG-Lockup-1Line-Black_vMWBFT9.svg" />
+# DevTycoon
 
-# Run and deploy your AI Studio app
+> A fun scalability game where you optimize the infrastructure of a global web ecosystem.
 
-This contains everything you need to run your app locally.
+Play online:
+https://devtycoon-game-212836286422.asia-southeast2.run.app/
 
-View your app in AI Studio: https://ai.studio/apps/1e066e00-ca63-42f5-b33f-d569fd5abad9
+## About
 
-## Run Locally
+DevTycoon is a browser-based simulation game about scaling a web ecosystem.
 
-**Prerequisites:**  Node.js
+You start with a small infrastructure and gradually face increasing traffic, higher costs, and more complex challenges. Upgrade your servers, optimize your architecture, and try to keep the system alive as your platform grows.
 
+The game is inspired by real-world scalability problems faced by modern web applications and cloud platforms.
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+## Features
+
+- Simulate the growth of a global web ecosystem
+- Manage increasing traffic and infrastructure costs
+- Upgrade servers and improve performance
+- Balance scalability, reliability, and efficiency
+- Endless progression with increasing difficulty
+
+## Gameplay
+
+Start with limited resources.
+
+As more users join your platform, you'll need to:
+
+- Upgrade your infrastructure
+- Increase server capacity
+- Reduce bottlenecks
+- Optimize costs
+- Scale your system globally
+
+The challenge is simple:
+
+**How far can you scale before your infrastructure collapses?**
+
+## Tech Stack
+
+- HTML
+- CSS
+- JavaScript
+- Node.js
+- Google Cloud Run
+
+## Running Locally
+
+```bash
+git clone https://github.com/MFathinHalim/DevTycoon.git
+cd DevTycoon
+
+# install dependencies
+npm install
+
+# start development server
+npm run dev
+```
+
+## License
+
+MIT License.
